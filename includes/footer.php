@@ -1,0 +1,22 @@
+</div>
+    <footer class="bg-dark text-white mt-5 py-3">
+        <div class="container text-center">
+            <p>&copy; <?= date('Y') ?> Sistem Penyewaan - All Rights Reserved</p>
+        </div>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <?php
+    // Tentukan base path untuk script
+    $base_path = '';
+    $current_path = $_SERVER['PHP_SELF'];
+    if (strpos($current_path, '/owner/') !== false || strpos($current_path, '/renter/') !== false) {
+        $base_path = '../';
+    }
+    ?>
+    <script src="<?= $base_path ?>assets/js/main.js"></script>
+    <script src="<?= $base_path ?>assets/js/notifications.js"></script>
+</body>
+</html>

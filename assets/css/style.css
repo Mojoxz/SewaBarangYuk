@@ -1,0 +1,244 @@
+/* Style untuk aplikasi penyewaan */
+body {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: none;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.btn-primary {
+  background-color: #3490dc;
+  border-color: #3490dc;
+}
+
+.btn-primary:hover {
+  background-color: #2779bd;
+  border-color: #2779bd;
+}
+
+.btn-outline-primary {
+  color: #3490dc;
+  border-color: #3490dc;
+}
+
+.btn-outline-primary:hover {
+  background-color: #3490dc;
+  color: white;
+}
+
+.jumbotron {
+  background-color: #e9ecef;
+  border-radius: 0.3rem;
+}
+
+.badge-success {
+  background-color: #38c172;
+}
+
+.badge-warning {
+  background-color: #ffed4a;
+  color: #333;
+}
+
+.badge-danger {
+  background-color: #e3342f;
+}
+
+.badge-info {
+  background-color: #3490dc;
+}
+
+.badge-primary {
+  background-color: #6574cd;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.form-control:focus {
+  border-color: #3490dc;
+  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
+}
+
+/* Custom style untuk dashboard cards */
+.bg-primary {
+  background-color: #3490dc !important;
+}
+
+.bg-success {
+  background-color: #38c172 !important;
+}
+
+.bg-warning {
+  background-color: #ffed4a !important;
+}
+
+.bg-info {
+  background-color: #6cb2eb !important;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+/* Responsive table */
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom style untuk notification dropdown */
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Notification styles */
+#notification-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 350px;
+}
+
+.toast-notification {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-top: 10px;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  transform: translateY(20px);
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-header {
+  background-color: #f8f9fa;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+}
+
+.toast-header .mr-auto {
+  margin-right: auto;
+}
+
+.toast-header small {
+  color: #6c757d;
+  margin-right: 10px;
+}
+
+.toast-body {
+  padding: 0.75rem;
+}
+
+.close {
+  background-color: transparent;
+  border: 0;
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  opacity: 0.5;
+  padding: 0;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+  opacity: 0.75;
+}
+
+/* Notification styles */
+#notification-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 350px;
+}
+
+.toast-notification {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-top: 10px;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  transform: translateY(20px);
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-header {
+  background-color: #f8f9fa;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+}
+
+.toast-header .mr-auto {
+  margin-right: auto;
+}
+
+.toast-header small {
+  color: #6c757d;
+  margin-right: 10px;
+}
+
+.toast-body {
+  padding: 0.75rem;
+}
+
+.close {
+  background-color: transparent;
+  border: 0;
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  opacity: 0.5;
+  padding: 0;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+  opacity: 0.75;
+}
