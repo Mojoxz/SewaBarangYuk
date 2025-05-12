@@ -185,8 +185,8 @@ $items = fetchAll("SELECT i.*, u.name as owner_name FROM items i
     <div class="hero-header shadow">
         <div class="container">
             <i class="fas fa-handshake hero-icon"></i>
-            <h1 class="display-4 font-weight-bold">Selamat Datang di Sistem Penyewaan</h1>
-            <p class="lead">Platform terpercaya untuk menyewa dan menyewakan barang di wilayah Gresik dan sekitarnya.</p>
+            <h1 class="display-4 font-weight-bold">Selamat Datang di SewaBarangYuk</h1>
+            <p class="lead">Platform terpercaya untuk menyewa dan menyewakan barang di wilayah Krembung dan sekitarnya.</p>
             <p class="mb-4">Sewa barang berkualitas dengan harga terjangkau atau sewakan barang Anda untuk mendapatkan penghasilan tambahan.</p>
             <?php if (!isLoggedIn()): ?>
             <div class="d-grid gap-2 d-md-block">
@@ -370,7 +370,7 @@ $items = fetchAll("SELECT i.*, u.name as owner_name FROM items i
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <p class="mb-3">"Sistem penyewaan yang mudah digunakan dan sangat membantu kebutuhan saya. Proses cepat dan tidak ribet."</p>
+                    <p class="mb-3">"SewaBarangYuk yang mudah digunakan dan sangat membantu kebutuhan saya. Proses cepat dan tidak ribet."</p>
                     <div class="d-flex align-items-center">
                         <i class="fas fa-user-circle fa-2x me-3 text-primary"></i>
                         <div>

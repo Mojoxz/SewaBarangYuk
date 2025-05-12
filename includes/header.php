@@ -1,4 +1,6 @@
 <?php
+// Hapus baris kosong atau spasi sebelum tag PHP
+// Mulai session paling awal
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -12,6 +14,7 @@ if (strpos($current_path, '/owner/') !== false || strpos($current_path, '/renter
     $base_path = '../';
 }
 
+// Include file-file penting
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/functions.php';
 require_once __DIR__ . '/auth.php';
@@ -20,8 +23,7 @@ require_once __DIR__ . '/auth.php';
 if (isLoggedIn()) {
     checkLateReturns();
 }
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -106,15 +108,19 @@ if (isLoggedIn()) {
                                 <?php endif; ?>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php 
+                                if (isRenter()) {
+                                    echo $base_path . 'renter/profile.php';
+                                } elseif (isOwner()) {
+                                    echo $base_path . 'owner/profile.php';
+                                }
+                            ?>">
                                 <?= htmlspecialchars($_SESSION['user_name']) ?>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="<?= $base_path ?>profile.php">Profil</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="<?= $base_path ?>logout.php">Logout</a>
-                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $base_path ?>logout.php">Logout</a>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
@@ -128,4 +134,6 @@ if (isLoggedIn()) {
             </div>
         </div>
     </nav>
-    <div class="container mt-4">
+    <div class="container mt-4"></div>
+</body>
+</html>

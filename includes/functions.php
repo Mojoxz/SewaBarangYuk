@@ -1,35 +1,59 @@
 <?php
 // Fungsi untuk mengalihkan halaman
 // Fungsi untuk mengalihkan halaman dengan lebih robust
-function redirect($url) {
-    // Jika URL sudah absolut (dimulai dengan http:// atau https://)
-    if (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0) {
-        header("Location: $url");
-        exit();
+function safe_redirect($url) {
+    // Pastikan tidak ada output sebelumnya
+    if (ob_get_level() > 0) {
+        ob_end_clean();
     }
     
-    // Jika URL dimulai dengan / (absolute path dari root domain)
-    if (substr($url, 0, 1) === '/') {
-        header("Location: $url");
-        exit();
+    // Normalisasi URL
+    $url = trim($url);
+    
+    // Jika URL kosong, alihkan ke halaman utama
+    if (empty($url)) {
+        $url = 'index.php';
     }
     
-    // Tentukan base path untuk relative URL
+    // Tentukan base path
     $base_path = '';
     $current_path = $_SERVER['PHP_SELF'];
     
-    // Jika file berada di subfolder (owner atau renter)
-    if (strpos($current_path, '/owner/') !== false || strpos($current_path, '/renter/') !== false) {
+    // Deteksi subfolder
+    if (strpos($current_path, '/owner/') !== false) {
+        $base_path = '../';
+    } elseif (strpos($current_path, '/renter/') !== false) {
         $base_path = '../';
     }
     
-    // Periksa jika URL sudah mengandung base_path
-    if (!empty($base_path) && strpos($url, $base_path) === 0) {
-        header("Location: $url");
-    } else {
-        header("Location: $base_path$url");
+    // Gabungkan base path dengan URL jika perlu
+    if (!empty($base_path) && strpos($url, $base_path) !== 0 && 
+        strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+        $url = $base_path . $url;
     }
+    
+    // Gunakan JavaScript untuk redirect jika headers sudah dikirim
+    if (headers_sent()) {
+        echo '<script>
+            if (window.location.href !== "' . htmlspecialchars($url, ENT_QUOTES) . '") {
+                window.location.href = "' . htmlspecialchars($url, ENT_QUOTES) . '";
+            }
+        </script>
+        <noscript>
+            <meta http-equiv="refresh" content="0;url=' . htmlspecialchars($url, ENT_QUOTES) . '">
+            <p>Jika Anda tidak dialihkan, silakan klik <a href="' . htmlspecialchars($url, ENT_QUOTES) . '">di sini</a>.</p>
+        </noscript>';
+        exit();
+    }
+    
+    // Gunakan header untuk redirect
+    header("Location: $url");
     exit();
+}
+
+// Fungsi redirect default yang menggunakan safe_redirect
+function redirect($url) {
+    safe_redirect($url);
 }
 
 // Fungsi untuk memeriksa apakah user sudah login

@@ -223,7 +223,7 @@ try {
 </style>
 
 <div class="container-fluid">
-    <h1>Dashboard Pemilik</h1>
+    <h1>Dashboard Owner</h1>
 
     <div class="row">
         <!-- Stat Cards -->

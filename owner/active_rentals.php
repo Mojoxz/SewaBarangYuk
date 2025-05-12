@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_
         }
         
         // Refresh halaman
-        redirect('active_rentals.php' . (empty($_GET) ? '' : '?' . http_build_query($_GET)));
+        redirect('dashboard.php' . (empty($_GET) ? '' : '?' . http_build_query($_GET)));
     }
 }
 
@@ -90,143 +90,271 @@ unset($_SESSION['error']);
 unset($_SESSION['success']);
 ?>
 
-<h1>Penyewaan Aktif</h1>
+<style>
+    :root {
+        --primary: #3498db;
+        --primary-dark: #2980b9;
+        --success: #2ecc71;
+        --success-dark: #27ae60;
+        --warning: #f39c12;
+        --warning-dark: #d35400;
+        --info: #1abc9c;
+        --info-dark: #16a085;
+        --danger: #e74c3c;
+    }
+    
+    body {
+        background-color: #f4f6f9;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 1.5rem;
+    }
+    
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding: 1rem 1.25rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .nav-tabs .nav-link {
+        color: #6c757d;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-tabs .nav-link.active {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+    
+    .nav-tabs .nav-link:hover {
+        background-color: rgba(52, 152, 219, 0.1);
+        color: var(--primary);
+    }
+    
+    h1 {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+    }
+    
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        border-top: none;
+        font-weight: 600;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+    
+    .btn-sm {
+        transition: all 0.3s ease;
+    }
+    
+    .btn-success {
+        background-color: var(--success);
+        border-color: var(--success);
+    }
+    
+    .btn-success:hover {
+        background-color: var(--success-dark);
+        border-color: var(--success-dark);
+    }
+    
+    .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+    }
+    
+    .badge-info {
+        background-color: var(--info);
+    }
+    
+    .badge-success {
+        background-color: var(--success);
+    }
+    
+    .badge-danger {
+        background-color: var(--danger);
+    }
+    
+    .badge-primary {
+        background-color: var(--primary);
+    }
+    
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+    
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+    
+    .alert-info {
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+        color: #0c5460;
+    }
+</style>
 
-<?php if ($error): ?>
-<div class="alert alert-danger"><?= $error ?></div>
-<?php endif; ?>
+<div class="container-fluid">
+    <h1>Penyewaan Aktif</h1>
 
-<?php if ($success): ?>
-<div class="alert alert-success"><?= $success ?></div>
-<?php endif; ?>
+    <?php if ($error): ?>
+    <div class="alert alert-danger"><?= $error ?></div>
+    <?php endif; ?>
 
-<div class="card">
-    <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-                <a class="nav-link <?= $status_filter === 'active' ? 'active' : '' ?>" href="?status=active">Aktif</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?= $status_filter === 'late' ? 'active' : '' ?>" href="?status=late">Terlambat</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?= $status_filter === 'completed' ? 'active' : '' ?>" href="?status=completed">Selesai</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?= $status_filter === 'all' ? 'active' : '' ?>" href="?status=all">Semua</a>
-            </li>
-        </ul>
-    </div>
-    <div class="card-body">
-        <?php if (count($rentals) > 0): ?>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Barang</th>
-                        <th>Penyewa</th>
-                        <th>Periode</th>
-                        <th>Status</th>
-                        <th>Sisa Waktu</th>
-                        <th>Total</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($rentals as $rental): ?>
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <?php if ($rental['item_image']): ?>
-                                <img src="../assets/images/uploads/items/<?= $rental['item_image'] ?>" class="mr-2" style="width: 50px; height: 50px; object-fit: cover;">
-                                <?php else: ?>
-                                <div class="bg-light mr-2 text-center" style="width: 50px; height: 50px;">
-                                    <i class="fas fa-image text-muted" style="line-height: 50px;"></i>
-                                </div>
-                                <?php endif; ?>
-                                <div>
-                                    <?= htmlspecialchars($rental['item_name']) ?>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <?= htmlspecialchars($rental['renter_name']) ?><br>
-                                <small class="text-muted"><?= htmlspecialchars($rental['renter_phone']) ?></small>
-                            </div>
-                        </td>
-                        <td>
-                            <?= formatDate($rental['start_date']) ?> s/d <?= formatDate($rental['end_date']) ?>
-                        </td>
-                        <td>
-                            <?php
-                            switch ($rental['status']) {
-                                case 'confirmed':
-                                    echo '<span class="badge badge-info">Dikonfirmasi</span>';
-                                    break;
-                                case 'active':
-                                    echo '<span class="badge badge-success">Aktif</span>';
-                                    break;
-                                case 'late':
-                                    echo '<span class="badge badge-danger">Terlambat</span>';
-                                    break;
-                                case 'completed':
-                                    echo '<span class="badge badge-primary">Selesai</span>';
-                                    break;
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <?php if (in_array($rental['status'], ['confirmed', 'active'])): ?>
-                                <?php if ($rental['days_remaining'] <= 0): ?>
-                                    <span class="text-danger">Jatuh tempo</span>
-                                <?php elseif ($rental['days_remaining'] <= 3): ?>
-                                    <span class="text-warning"><?= $rental['days_remaining'] ?> hari lagi</span>
-                                <?php else: ?>
-                                    <?= $rental['days_remaining'] ?> hari lagi
-                                <?php endif; ?>
-                            <?php elseif ($rental['status'] === 'late'): ?>
-                                <span class="text-danger"><?= abs($rental['days_remaining']) ?> hari terlambat</span>
-                            <?php else: ?>
-                                <span class="text-muted">-</span>
-                            <?php endif; ?>
-                        </td>
-                        <td><?= formatPrice($rental['total_price']) ?></td>
-                        <td>
-                            <?php if ($rental['status'] === 'confirmed'): ?>
-                            <form method="post" class="d-inline">
-                                <input type="hidden" name="rental_id" value="<?= $rental['rental_id'] ?>">
-                                <input type="hidden" name="action" value="start">
-                                <button type="submit" class="btn btn-sm btn-success">
-                                    <i class="fas fa-play"></i> Mulai
-                                </button>
-                            </form>
-                            <?php elseif (in_array($rental['status'], ['active', 'late'])): ?>
-                            <form method="post" class="d-inline" onsubmit="return confirm('Apakah Anda yakin barang telah dikembalikan?')">
-                                <input type="hidden" name="rental_id" value="<?= $rental['rental_id'] ?>">
-                                <input type="hidden" name="action" value="complete">
-                                <button type="submit" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-check"></i> Selesai
-                                </button>
-                            </form>
-                            <?php else: ?>
-                            <span class="text-muted">Tidak ada aksi</span>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+    <?php if ($success): ?>
+    <div class="alert alert-success"><?= $success ?></div>
+    <?php endif; ?>
+
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link <?= $status_filter === 'active' ? 'active' : '' ?>" href="?status=active">Aktif</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $status_filter === 'late' ? 'active' : '' ?>" href="?status=late">Terlambat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $status_filter === 'completed' ? 'active' : '' ?>" href="?status=completed">Selesai</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $status_filter === 'all' ? 'active' : '' ?>" href="?status=all">Semua</a>
+                </li>
+            </ul>
         </div>
-        <?php else: ?>
-        <div class="alert alert-info">
-            <?php if ($status_filter === 'all'): ?>
-                Belum ada penyewaan.
+        <div class="card-body">
+            <?php if (count($rentals) > 0): ?>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Barang</th>
+                            <th>Penyewa</th>
+                            <th>Periode</th>
+                            <th>Status</th>
+                            <th>Sisa Waktu</th>
+                            <th>Total</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($rentals as $rental): ?>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <?php if ($rental['item_image']): ?>
+                                    <img src="../assets/images/uploads/items/<?= $rental['item_image'] ?>" class="mr-2" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;">
+                                    <?php else: ?>
+                                    <div class="bg-light mr-2 text-center" style="width: 50px; height: 50px; border-radius: 6px;">
+                                        <i class="fas fa-image text-muted" style="line-height: 50px;"></i>
+                                    </div>
+                                    <?php endif; ?>
+                                    <div>
+                                        <?= htmlspecialchars($rental['item_name']) ?>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <?= htmlspecialchars($rental['renter_name']) ?><br>
+                                    <small class="text-muted"><?= htmlspecialchars($rental['renter_phone']) ?></small>
+                                </div>
+                            </td>
+                            <td>
+                                <?= formatDate($rental['start_date']) ?> s/d <?= formatDate($rental['end_date']) ?>
+                            </td>
+                            <td>
+                                <?php
+                                switch ($rental['status']) {
+                                    case 'confirmed':
+                                        echo '<span class="badge badge-info">Dikonfirmasi</span>';
+                                        break;
+                                    case 'active':
+                                        echo '<span class="badge badge-success">Aktif</span>';
+                                        break;
+                                    case 'late':
+                                        echo '<span class="badge badge-danger">Terlambat</span>';
+                                        break;
+                                    case 'completed':
+                                        echo '<span class="badge badge-primary">Selesai</span>';
+                                        break;
+                                }
+                                ?>
+                            </td>
+                            <td>
+                                <?php if (in_array($rental['status'], ['confirmed', 'active'])): ?>
+                                    <?php if ($rental['days_remaining'] <= 0): ?>
+                                        <span class="text-danger">Jatuh tempo</span>
+                                    <?php elseif ($rental['days_remaining'] <= 3): ?>
+                                        <span class="text-warning"><?= $rental['days_remaining'] ?> hari lagi</span>
+                                    <?php else: ?>
+                                        <?= $rental['days_remaining'] ?> hari lagi
+                                    <?php endif; ?>
+                                <?php elseif ($rental['status'] === 'late'): ?>
+                                    <span class="text-danger"><?= abs($rental['days_remaining']) ?> hari terlambat</span>
+                                <?php else: ?>
+                                    <span class="text-muted">-</span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= formatPrice($rental['total_price']) ?></td>
+                            <td>
+                                <?php if ($rental['status'] === 'confirmed'): ?>
+                                <form method="post" class="d-inline">
+                                    <input type="hidden" name="rental_id" value="<?= $rental['rental_id'] ?>">
+                                    <input type="hidden" name="action" value="start">
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        <i class="fas fa-play"></i> Mulai
+                                    </button>
+                                </form>
+                                <?php elseif (in_array($rental['status'], ['active', 'late'])): ?>
+                                <form method="post" class="d-inline" onsubmit="return confirm('Apakah Anda yakin barang telah dikembalikan?')">
+                                    <input type="hidden" name="rental_id" value="<?= $rental['rental_id'] ?>">
+                                    <input type="hidden" name="action" value="complete">
+                                    <button type="submit" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-check"></i> Selesai
+                                    </button>
+                                </form>
+                                <?php else: ?>
+                                <span class="text-muted">Tidak ada aksi</span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
             <?php else: ?>
-                Tidak ada penyewaan dengan status yang dipilih.
+            <div class="alert alert-info">
+                <?php if ($status_filter === 'all'): ?>
+                    Belum ada penyewaan.
+                <?php else: ?>
+                    Tidak ada penyewaan dengan status yang dipilih.
+                <?php endif; ?>
+            </div>
             <?php endif; ?>
         </div>
-        <?php endif; ?>
     </div>
 </div>
 
