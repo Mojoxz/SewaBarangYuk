@@ -62,76 +62,206 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="h5 mb-0">Detail Barang</h2>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-5">
-                        <?php if ($item['image']): ?>
-                        <img src="../assets/images/uploads/items/<?= $item['image'] ?>" class="img-fluid rounded" alt="<?= htmlspecialchars($item['name']) ?>">
-                        <?php else: ?>
-                        <div class="bg-light p-5 text-center">
-                            <i class="fas fa-image fa-5x text-muted"></i>
+<div class="container-fluid py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light rounded-pill px-3 py-2 shadow-sm">
+            <li class="breadcrumb-item"><a href="view_items.php" class="text-decoration-none"><i class="fas fa-home"></i> Daftar Barang</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Sewa Barang</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <!-- Detail Barang Card -->
+            <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="h5 mb-0"><i class="fas fa-info-circle mr-2"></i>Detail Barang</h2>
+                </div>
+                
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="item-image-container rounded overflow-hidden shadow-sm">
+                                <?php if ($item['image']): ?>
+                                <img src="../assets/images/uploads/items/<?= $item['image'] ?>" class="img-fluid" alt="<?= htmlspecialchars($item['name']) ?>">
+                                <?php else: ?>
+                                <div class="bg-light p-5 text-center">
+                                    <i class="fas fa-box fa-5x text-muted"></i>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <!-- Owner Info Card -->
+                            <div class="card mt-3 border-0 bg-light shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">Disewakan oleh</h6>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle mr-3 bg-primary text-white">
+                                            <span><?= substr($item['owner_name'], 0, 1) ?></span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 font-weight-bold"><?= htmlspecialchars($item['owner_name']) ?></h6>
+                                            <?php if (!empty($item['owner_phone'])): ?>
+                                            <small class="text-muted"><i class="fas fa-phone-alt mr-1"></i> <?= htmlspecialchars($item['owner_phone']) ?></small>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="col-md-7">
-                        <h3><?= htmlspecialchars($item['name']) ?></h3>
-                        <p><?= nl2br(htmlspecialchars($item['description'])) ?></p>
-                        <p><strong>Harga Sewa:</strong> <?= formatPrice($item['price_per_day']) ?> / hari</p>
-                        <p><strong>Stok Tersedia:</strong> <?= $item['stock'] ?></p>
-                        <p><strong>Disewakan oleh:</strong> <?= htmlspecialchars($item['owner_name']) ?></p>
+                        
+                        <div class="col-md-7">
+                            <h3 class="text-primary font-weight-bold mb-3"><?= htmlspecialchars($item['name']) ?></h3>
+                            
+                            <div class="mb-4 price-highlight">
+                                <span class="font-weight-bold">Harga Sewa:</span>
+                                <div class="price-tag">
+                                    <span class="price-amount"><?= formatPrice($item['price_per_day']) ?></span>
+                                    <span class="price-period">/hari</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <span class="badge badge-success mr-2"><i class="fas fa-check-circle mr-1"></i> Tersedia</span>
+                                <span class="badge badge-info"><i class="fas fa-cubes mr-1"></i> Stok: <?= $item['stock'] ?></span>
+                            </div>
+                            
+                            <div class="description-section">
+                                <h5 class="mb-2">Deskripsi</h5>
+                                <div class="p-3 bg-light rounded">
+                                    <p class="mb-0"><?= nl2br(htmlspecialchars($item['description'])) ?></p>
+                                </div>
+                            </div>
+                            
+                            <!-- Fitur dan Manfaat -->
+                            <div class="mt-4">
+                                <h5 class="mb-3">Mengapa Menyewa dari Kami?</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="feature-icon mr-2">
+                                                <i class="fas fa-shipping-fast text-success"></i>
+                                            </div>
+                                            <div>Pengiriman Cepat</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="feature-icon mr-2">
+                                                <i class="fas fa-shield-alt text-primary"></i>
+                                            </div>
+                                            <div>Barang Berkualitas</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="feature-icon mr-2">
+                                                <i class="fas fa-wallet text-warning"></i>
+                                            </div>
+                                            <div>Hemat Biaya</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="feature-icon mr-2">
+                                                <i class="fas fa-headset text-danger"></i>
+                                            </div>
+                                            <div>Dukungan 24/7</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="h5 mb-0">Form Penyewaan</h3>
-            </div>
-            <div class="card-body">
-                <?php if ($error): ?>
-                <div class="alert alert-danger"><?= $error ?></div>
-                <?php endif; ?>
-                
-                <?php if ($success): ?>
-                <div class="alert alert-success"><?= $success ?></div>
-                <div class="text-center mt-3">
-                    <a href="my_rentals.php" class="btn btn-primary">Lihat Penyewaan Saya</a>
+        
+        <div class="col-lg-4">
+            <!-- Form Penyewaan Card -->
+            <div class="card border-0 shadow-sm rounded-lg">
+                <div class="card-header bg-primary text-white py-3">
+                    <h3 class="h5 mb-0"><i class="fas fa-calendar-alt mr-2"></i>Form Penyewaan</h3>
                 </div>
-                <?php else: ?>
-                
-                <form method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="start_date">Tanggal Mulai</label>
-                        <input type="date" class="form-control" id="start_date" name="start_date" min="<?= date('Y-m-d') ?>" required>
+                <div class="card-body">
+                    <?php if ($error): ?>
+                    <div class="alert alert-danger d-flex align-items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <div><?= $error ?></div>
                     </div>
-                    <div class="form-group">
-                        <label for="end_date">Tanggal Selesai</label>
-                        <input type="date" class="form-control" id="end_date" name="end_date" min="<?= date('Y-m-d') ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_card">Foto KTP (untuk verifikasi)</label>
-                        <input type="file" class="form-control-file" id="id_card" name="id_card" accept="image/jpeg,image/png,image/jpg" required>
-                        <small class="form-text text-muted">Upload foto KTP untuk verifikasi identitas</small>
-                    </div>
+                    <?php endif; ?>
                     
-                    <div class="form-group">
-                        <label>Total Harga:</label>
-                        <div class="font-weight-bold" id="total_price">Rp 0</div>
-                        <small class="form-text text-muted">Total akan dihitung berdasarkan durasi sewa</small>
+                    <?php if ($success): ?>
+                    <div class="alert alert-success d-flex align-items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <div><?= $success ?></div>
                     </div>
+                    <div class="success-animation">
+                        <div class="checkmark-circle">
+                            <div class="checkmark draw"></div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="my_rentals.php" class="btn btn-success btn-lg">
+                            <i class="fas fa-list-alt mr-2"></i>Lihat Penyewaan Saya
+                        </a>
+                    </div>
+                    <?php else: ?>
                     
-                    <button type="submit" class="btn btn-primary btn-block">Sewa Sekarang</button>
-                </form>
-                <?php endif; ?>
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="start_date" class="font-weight-bold">
+                                <i class="fas fa-calendar mr-1"></i> Tanggal Mulai
+                            </label>
+                            <input type="date" class="form-control form-control-lg" id="start_date" name="start_date" min="<?= date('Y-m-d') ?>" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="end_date" class="font-weight-bold">
+                                <i class="fas fa-calendar-check mr-1"></i> Tanggal Selesai
+                            </label>
+                            <input type="date" class="form-control form-control-lg" id="end_date" name="end_date" min="<?= date('Y-m-d') ?>" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_card" class="font-weight-bold">
+                                <i class="fas fa-id-card mr-1"></i> Foto KTP (untuk verifikasi)
+                            </label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="id_card" name="id_card" accept="image/jpeg,image/png,image/jpg" required>
+                                <label class="custom-file-label" for="id_card">Pilih file...</label>
+                            </div>
+                            <small class="form-text text-muted">
+                                <i class="fas fa-info-circle mr-1"></i> Upload foto KTP untuk verifikasi identitas
+                            </small>
+                        </div>
+                        
+                        <div class="rental-summary mt-4 mb-4">
+                            <h5 class="mb-3">Ringkasan Sewa</h5>
+                            <div class="p-3 bg-light rounded">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Harga per hari:</span>
+                                    <span class="font-weight-bold"><?= formatPrice($item['price_per_day']) ?></span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Durasi sewa:</span>
+                                    <span class="font-weight-bold" id="rental_days">0 hari</span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="font-weight-bold">Total:</span>
+                                    <span class="total-price" id="total_price">Rp 0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">
+                            <i class="fas fa-shopping-cart mr-2"></i>Sewa Sekarang
+                        </button>
+                    </form>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>
@@ -143,6 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     const startDateInput = document.getElementById('start_date');
     const endDateInput = document.getElementById('end_date');
     const totalPriceElement = document.getElementById('total_price');
+    const rentalDaysElement = document.getElementById('rental_days');
     
     function updateTotalPrice() {
         if (startDateInput.value && endDateInput.value) {
@@ -154,12 +285,189 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const days = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
                 const totalPrice = pricePerDay * days;
                 totalPriceElement.textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
+                rentalDaysElement.textContent = days + ' hari';
             }
         }
     }
     
     startDateInput.addEventListener('change', updateTotalPrice);
     endDateInput.addEventListener('change', updateTotalPrice);
+    
+    // Script untuk custom file input
+    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+        var fileName = e.target.files[0].name;
+        var nextSibling = e.target.nextElementSibling;
+        nextSibling.innerText = fileName;
+    });
 </script>
+
+<style>
+    /* Custom styles */
+    .rounded-lg {
+        border-radius: 0.5rem !important;
+    }
+    
+    .item-image-container {
+        position: relative;
+        overflow: hidden;
+        height: 250px;
+    }
+    
+    .item-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .price-tag {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border-radius: 8px;
+        padding: 8px 15px;
+        display: inline-block;
+        margin-left: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+    
+    .price-amount {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+    }
+    
+    .price-period {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.85);
+    }
+    
+    .price-highlight {
+        display: flex;
+        align-items: center;
+    }
+    
+    .total-price {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #28a745;
+    }
+    
+    .feature-icon {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: rgba(0,0,0,0.05);
+    }
+    
+    .feature-icon i {
+        font-size: 1rem;
+    }
+    
+    .avatar-circle {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+    
+    .card-header {
+        border-bottom: none;
+    }
+    
+    .form-control-lg {
+        border-radius: 0.4rem;
+    }
+    
+    .btn-lg {
+        border-radius: 0.4rem;
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Checkmark animation for success */
+    .success-animation {
+        margin: 20px auto;
+        text-align: center;
+    }
+    
+    .checkmark-circle {
+        width: 80px;
+        height: 80px;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .checkmark-circle .background {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #28a745;
+        position: absolute;
+    }
+    
+    .checkmark-circle .checkmark {
+        border-radius: 5px;
+    }
+    
+    .checkmark-circle .checkmark.draw:after {
+        animation-delay: 300ms;
+        animation-duration: 1s;
+        animation-timing-function: ease;
+        animation-name: checkmark;
+        transform: scaleX(-1) rotate(135deg);
+        animation-fill-mode: forwards;
+    }
+    
+    .checkmark-circle .checkmark:after {
+        opacity: 1;
+        height: 40px;
+        width: 20px;
+        transform-origin: left top;
+        border-right: 7px solid #28a745;
+        border-top: 7px solid #28a745;
+        content: '';
+        left: 16px;
+        top: 44px;
+        position: absolute;
+    }
+    
+    @keyframes checkmark {
+        0% {
+            height: 0;
+            width: 0;
+            opacity: 1;
+        }
+        20% {
+            height: 0;
+            width: 20px;
+            opacity: 1;
+        }
+        40% {
+            height: 40px;
+            width: 20px;
+            opacity: 1;
+        }
+        100% {
+            height: 40px;
+            width: 20px;
+            opacity: 1;
+        }
+    }
+    
+    .rounded-pill {
+        border-radius: 50rem !important;
+    }
+    
+    .shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    }
+</style>
 
 <?php require_once '../includes/footer.php'; ?>

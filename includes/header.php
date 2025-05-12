@@ -26,11 +26,10 @@ if (isLoggedIn()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Penyewaan</title>
+    <title>SewaBarangYuk</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="<?= $base_path ?>assets/css/style.css">
-    <!-- Pastikan script notifications.js diload hanya untuk user yang login -->
     <?php if (isLoggedIn()): ?>
     <script src="<?= $base_path ?>assets/js/notifications.js"></script>
     <?php endif; ?>
@@ -38,17 +37,17 @@ if (isLoggedIn()) {
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="<?= $base_path ?>index.php">Sistem Penyewaan</a>
+            <a class="navbar-brand" href="<?= $base_path ?>index.php">SewaBarangYuk</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $base_path ?>index.php">Beranda</a>
-                    </li>
                     <?php if (isLoggedIn()): ?>
                         <?php if (isRenter()): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $base_path ?>renter/dashboard.php">Beranda</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= $base_path ?>renter/view_items.php">Lihat Barang</a>
                         </li>
@@ -59,6 +58,9 @@ if (isLoggedIn()) {
                         
                         <?php if (isOwner()): ?>
                         <li class="nav-item">
+                            <a class="nav-link" href="<?= $base_path ?>owner/dashboard.php">Beranda</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="<?= $base_path ?>owner/manage_items.php">Kelola Barang</a>
                         </li>
                         <li class="nav-item">
@@ -68,6 +70,10 @@ if (isLoggedIn()) {
                             <a class="nav-link" href="<?= $base_path ?>owner/active_rentals.php">Penyewaan Aktif</a>
                         </li>
                         <?php endif; ?>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $base_path ?>index.php">Beranda</a>
+                        </li>
                     <?php endif; ?>
                 </ul>
                 <ul class="navbar-nav">

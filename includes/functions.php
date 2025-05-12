@@ -59,32 +59,71 @@ function isRenter() {
     return $user && ($user['user_type'] == 'renter' || $user['user_type'] == 'both');
 }
 
-// Fungsi untuk upload file
+
+
+// Fungsi untuk upload file dengan penamaan sederhana
 function uploadFile($file, $directory) {
-    $target_dir = "assets/images/uploads/$directory/";
+    // Tentukan base path untuk upload
+    $base_path = $_SERVER['DOCUMENT_ROOT'] . '/SewaBarangYuk/';
+    $upload_path = 'assets/images/uploads/' . $directory . '/';
+    $target_dir = $base_path . $upload_path;
     
-    // Pastikan direktori ada
+    // Pastikan direktori ada, jika tidak buat
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }
     
-    $filename = time() . '_' . basename($file["name"]);
-    $target_file = $target_dir . $filename;
+    // Dapatkan ekstensi file
+    $imageFileType = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
     
-    // Check jika file adalah gambar
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+    // Cek jika file adalah gambar
+    $allowed_types = ['jpg', 'png', 'jpeg', 'gif'];
+    if(!in_array($imageFileType, $allowed_types)) {
         return [
             'success' => false,
-            'message' => 'Hanya file JPG, JPEG, dan PNG yang diperbolehkan.'
+            'message' => 'Hanya file JPG, JPEG, PNG dan GIF yang diperbolehkan.'
         ];
+    }
+    
+    // Check ukuran file (maksimal 5MB)
+    if ($file["size"] > 5000000) {
+        return [
+            'success' => false,
+            'message' => 'Ukuran file terlalu besar (maksimal 5MB).'
+        ];
+    }
+    
+    // Check jika file benar-benar gambar
+    $check = getimagesize($file["tmp_name"]);
+    if($check === false) {
+        return [
+            'success' => false,
+            'message' => 'File yang diupload bukan gambar yang valid.'
+        ];
+    }
+    
+    // Buat nama file pendek dan unik
+    // Format: [directory]_[timestamp pendek].[ekstensi]
+    $short_time = substr(time(), -6); // Ambil 6 digit terakhir dari timestamp
+    $filename = $directory . '_' . $short_time . '.' . $imageFileType;
+    $target_file = $target_dir . $filename;
+    
+    // Jika file dengan nama yang sama sudah ada, tambahkan angka unik
+    $counter = 1;
+    while (file_exists($target_file)) {
+        $filename = $directory . '_' . $short_time . '_' . $counter . '.' . $imageFileType;
+        $target_file = $target_dir . $filename;
+        $counter++;
     }
     
     // Upload file
     if (move_uploaded_file($file["tmp_name"], $target_file)) {
+        // PENTING: Hanya simpan nama file saja, bukan path lengkap
+        // Ini memungkinkan fleksibilitas dalam pengaksesan file
         return [
             'success' => true,
-            'filename' => $filename
+            'filename' => $filename,  // Hanya nama file saja
+            'full_path' => $target_file  // Path lengkap file di server (untuk debugging)
         ];
     } else {
         return [
@@ -93,6 +132,7 @@ function uploadFile($file, $directory) {
         ];
     }
 }
+
 
 // Fungsi untuk menghitung harga total sewa
 function calculateTotalPrice($price_per_day, $start_date, $end_date) {
