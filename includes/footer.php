@@ -1,7 +1,7 @@
 </div>
     <footer class="bg-dark text-white mt-5 py-3">
         <div class="container text-center">
-            <p>&copy; <?= date('Y') ?> Sistem Penyewaan - All Rights Reserved</p>
+            <p>&copy; <?= date('Y') ?> SewaBarangYuk - All Rights Reserved</p>
         </div>
     </footer>
     
