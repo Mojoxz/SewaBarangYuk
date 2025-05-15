@@ -327,4 +327,3 @@ unset($_SESSION['success']);
     </div>
 </div>
 
-<?php require_once '../includes/footer.php'; ?>

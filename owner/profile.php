@@ -237,4 +237,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     });
 </script>
 
-<?php require_once '../includes/footer.php'; ?>

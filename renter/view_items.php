@@ -251,4 +251,3 @@ $items = fetchAll($sql_base, $params);
     }
 </style>
 
-<?php require_once '../includes/footer.php'; ?>

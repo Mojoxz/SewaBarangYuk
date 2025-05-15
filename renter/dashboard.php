@@ -465,4 +465,3 @@ $notifications = fetchAll("SELECT * FROM notifications
     </div>
 </div>
 
-<?php require_once '../includes/footer.php'; ?>
