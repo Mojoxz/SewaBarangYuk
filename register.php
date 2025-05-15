@@ -239,8 +239,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         <div class="form-group">
     <label><i class="fas fa-user-tag mr-2 text-primary"></i>Daftar Sebagai</label>
-    <div class="row text-center mt-3">
-        <div class="col-md-4 mb-3">
+    <div class="row text-center mt-3 justify-content-center">
+        <div class="col-md-5 mb-3">
             <input type="radio" class="d-none" name="user_type" id="user_type_renter" value="renter" checked>
             <label for="user_type_renter" class="card user-type-card p-3">
                 <div class="card-body">
@@ -251,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </label>
         </div>
         
-        <div class="col-md-4 mb-3">
+        <div class="col-md-5 mb-3">
             <input type="radio" class="d-none" name="user_type" id="user_type_owner" value="owner">
             <label for="user_type_owner" class="card user-type-card p-3">
                 <div class="card-body">
@@ -260,21 +260,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p class="card-text text-muted">Meminjamkan barang</p>
                 </div>
             </label>
-        </div>
-        
-        <div class="col-md-4 mb-3">
-            <input type="radio" class="d-none" name="user_type" id="user_type_both" value="both">
-            <label for="user_type_both" class="card user-type-card p-3">
-                <div class="card-body">
-                    <i class="fas fa-exchange-alt fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Keduanya</h5>
-                    <p class="card-text text-muted">Sewa dan pinjamkan</p>
-                </div>
-            </label>
-        </div>
+        </div>        
     </div>
 </div>
-
                         
                         <div class="text-right mt-4">
                             <button type="submit" class="btn btn-primary btn-block">
